@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
-const Thought = require("./models/Thought");
+const Thought = require("../models/Thought");
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/socialNetworkDB", {
