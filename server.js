@@ -2,6 +2,11 @@
 const mongoose = require('mongoose');
 const express = require('express');
 
+
+// Import routes
+const userRoutes = require('./routes/api/userRoutes');
+const thoughtRoutes = require('./routes/api/thoughtRoutes');
+
 // Express
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,48 +21,9 @@ mongoose.connect('mongodb://localhost:27017/employeeDB', {
   useCreateIndex: true
 });
 
-
-// Define Routes
-app.get('/api/users', async (req, res) => {
-  const users = await User.find();
-  res.json(users);
-});
-
-app.get('/api/users/:id', async (req, res) => {
-    try {
-      const user = await User.findById(req.params.id).populate('thoughts');
-      res.json(user);
-    } catch (error) {
-        res.status(500).json(error);
-        }
-});
-
-app.post('/api/users', async (req, res) => {
-    try {
-        const user = await User.create(req.body);
-        res.json(user);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
-
-app.put('/api/users/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndUpdate(req.params.id , req.body, {new: true});
-        res.json(user);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
-
-app.delete('/api/users/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        res.json(user);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
+// Use routes
+app.use('/api/users', userRoutes);
+app.use('/api/thoughts', thoughtRoutes);
 
 
 
